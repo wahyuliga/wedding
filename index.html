@@ -602,14 +602,6 @@
                     <input type="text" id="namaTamuForm" class="form-control" placeholder="Masukkan nama Anda" required>
                 </div>
                 <div class="form-group">
-                    <label for="statusKehadiran"><i class="far fa-check-circle"></i> Konfirmasi Kehadiran</label>
-                    <select id="statusKehadiran" class="form-control" required>
-                        <option value="" disabled selected>Pilih status kehadiran...</option>
-                        <option value="Hadir">Ya, Saya akan hadir</option>
-                        <option value="Tidak Hadir">Maaf, tidak bisa hadir</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="pesanUcapan"><i class="far fa-comment-dots"></i> Ucapan & Doa Restu</label>
                     <textarea id="pesanUcapan" class="form-control" placeholder="Tuliskan ucapan dan doa untuk kedua mempelai..." required></textarea>
                 </div>
@@ -733,7 +725,7 @@
 
         // Fitur Kirim Form RSVP ke Google Sheets
         const formRSVP = document.getElementById('formBukuTamu');
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxCg8oE_fDkg5ql4zO-f10BFHqEZ0kQDbVQLofHJFzb_2GLgK9BzwWyMmJyi1PVEcxi_A/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzfaeghQa39CiPw7oMEOeHFwyfEA5ZKFI-xdX8I7dctSjPJascoA8arcceir0_oblESNw/exec'; 
 
         formRSVP.addEventListener('submit', function(e) {
             e.preventDefault(); // Mencegah halaman berpindah
@@ -743,7 +735,6 @@
 
             // Ambil nilai dari input form
             const nama = document.getElementById('namaTamuForm').value;
-            const status = document.getElementById('statusKehadiran').value;
             const pesan = document.getElementById('pesanUcapan').value;
 
             // Ubah tombol jadi mode loading
@@ -754,7 +745,6 @@
             // Siapkan data dalam format teks URL (Lebih stabil untuk Google Sheets)
             const dataTamu = new URLSearchParams();
             dataTamu.append('nama', nama);
-            dataTamu.append('status', status);
             dataTamu.append('pesan', pesan);
 
             // Proses kirim ke Google Sheets
@@ -770,10 +760,9 @@
                     // Jika berhasil masuk Google Sheets, tampilkan juga di layar secara instan
                     const ucapanBaru = document.createElement('div');
                     ucapanBaru.className = 'ucapan-item';
-                    const badgeColor = status === 'Hadir' ? 'var(--gold)' : '#999';
 
                     ucapanBaru.innerHTML = `
-                        <div class="ucapan-nama">${nama} <span class="ucapan-badge" style="background-color: ${badgeColor}">${status}</span></div>
+                        <div class="ucapan-nama">${nama}</div>
                         <div class="ucapan-teks">${pesan}</div>
                     `;
 
@@ -819,10 +808,9 @@
                         if (item.nama && item.pesan) { // Pastikan baris tidak kosong
                             const ucapanItem = document.createElement('div');
                             ucapanItem.className = 'ucapan-item';
-                            const badgeColor = item.status === 'Hadir' ? 'var(--gold)' : '#999';
                             
                             ucapanItem.innerHTML = `
-                                <div class="ucapan-nama">${item.nama} <span class="ucapan-badge" style="background-color: ${badgeColor}">${item.status}</span></div>
+                                <div class="ucapan-nama">${item.nama}</div>
                                 <div class="ucapan-teks">${item.pesan}</div>
                             `;
                             daftarUcapan.appendChild(ucapanItem);
